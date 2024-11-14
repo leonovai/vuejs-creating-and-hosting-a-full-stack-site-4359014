@@ -1,18 +1,10 @@
 <template>
   <h1>Products</h1>
-  <div class="grid-wrap">
-    <div v-for="product in products" class="product-item" :key="product.id">
-      <img :src="product.imageName" />
-      <h3 class="product-name">{{ product.name }}</h3>
-      <p class="product-price">{{ product.price }}</p>
-      <RouterLink :to="'/product/' + product.id">
-        <button>View Details</button>
-      </RouterLink>
-    </div>
-  </div>
+  <ProductsList :products="products" />
 </template>
 
 <script>
+import ProductsList from '@/components/ProductsList.vue';
 import { products } from '../temp-data'
 
 export default {
@@ -21,6 +13,9 @@ export default {
     return {
       products,
     }
+  },
+  components: {
+    ProductsList,
   }
 }
 </script>
