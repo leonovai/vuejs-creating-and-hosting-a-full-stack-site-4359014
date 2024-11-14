@@ -1,16 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" width="256" height="256">
-  <h1>Olie</h1>
+  <NavBar />
   <div class="page-wrap">
     <router-view />
   </div>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue'
 
 export default {
   name: 'App',
   components: {
+    NavBar,
   }
 }
 </script>
