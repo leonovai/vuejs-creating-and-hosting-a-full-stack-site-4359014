@@ -11,7 +11,7 @@ createApp(App)
   history: VueRouter.createWebHistory(process.env.BASE_URL),
   routes: [
     {path: "/cart", component: ShoppingCartPage},
-    {path: "/product/:id", component: ProductDetailPage},
+    {path: "/product/:productId", component: ProductDetailPage},
     {path: "/products", component: ProductsPage},
   ]
 }))
