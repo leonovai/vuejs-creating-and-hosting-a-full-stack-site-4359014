@@ -4,7 +4,7 @@ import { cartItems, products } from "./temp-data";
 const app = express();
 
 app.get("/hello", (_, res) => {
-  res.send("Hello111!");
+  res.send("Hello!");
 });
 
 app.get("/products", (_, res) => {
