@@ -48,6 +48,18 @@ app.delete('/cart/:productId', (req, res) => {
   res.json(populatedCart);
 });
 
+app.delete("/cart/:productId", (req, res) => {
+  const productId = req.params.productId;
+  const index = cartItems.findIndex(product => product.id === productId);
+
+  if (index !== -1) {
+    cartItems.splice(index, 1);
+  }
+
+  console.log(cartItems);
+  res.json(cartItems);
+});
+
 app.listen(8000, () => {
   console.log('Server is listening on port 8000')
 });
