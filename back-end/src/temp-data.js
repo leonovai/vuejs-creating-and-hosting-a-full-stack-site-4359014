@@ -7,7 +7,7 @@
 // import mediumBottle from './assets/medium-bottle.webp';
 // import boldBottle from './assets/bold-bottle.webp';
 
-export const cartItems = []
+export const cartItems = ['123', '345'];
 
 export const products = [{
     id: '123',
