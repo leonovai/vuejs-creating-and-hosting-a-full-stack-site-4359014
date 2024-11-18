@@ -54,25 +54,27 @@ async function start() {
       { $addToSet: { cartItems: productId } }
     );
 
-
     const user = await db.collection('users').findOne({ id: userId });
-    console.log(user);
 
     const populatedCart = await populateCartIds(user.cartItems);
     
     res.json(populatedCart);
   });
 
-  app.delete("/cart/:productId", (req, res) => {
+  app.delete("/users/:userId/cart/:productId", async (req, res) => {
+    const userId = req.params.userId;
     const productId = req.params.productId;
-    const index = cartItems.findIndex(product => product.id === productId);
+    
+    await db.collection('users').updateOne(
+      { id: userId },
+      { $pull: { cartItems: productId } }
+    );
 
-    if (index !== -1) {
-      cartItems.splice(index, 1);
-    }
-
-    console.log(cartItems);
-    res.json(cartItems);
+    const user = await db.collection('users').findOne({ id: userId });
+ 
+    const populatedCart = await populateCartIds(user.cartItems);
+    
+    res.json(populatedCart);
   });
 
   app.listen(8000, () => {
