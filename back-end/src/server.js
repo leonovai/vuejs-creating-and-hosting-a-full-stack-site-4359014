@@ -19,7 +19,7 @@ async function start() {
   const app = express();
   app.use(express.json());
 
-  app.get('/products', async (req, res) => {
+  app.get('/products', async (_, res) => {
     products = await db.collection('products').find({}).toArray();
     res.json(products);
   });
@@ -44,10 +44,22 @@ async function start() {
     res.json(product);
   });
 
-  app.post('/cart', (req, res) => {
+  app.post('/users/:userId/cart', async (req, res) => {
+    const userId = req.params.userId;
     const productId = req.body.id;
-    cartItems.push(productId);
-    const populatedCart = populateCartIds(cartItems);
+
+    // cartItems.push(productId);
+    await db.collection('users').updateOne(
+      { id: userId },
+      { $addToSet: { cartItems: productId } }
+    );
+
+
+    const user = await db.collection('users').findOne({ id: userId });
+    console.log(user);
+
+    const populatedCart = await populateCartIds(user.cartItems);
+    
     res.json(populatedCart);
   });
 
@@ -68,4 +80,4 @@ async function start() {
   });
 }
 
-start()
+start();
