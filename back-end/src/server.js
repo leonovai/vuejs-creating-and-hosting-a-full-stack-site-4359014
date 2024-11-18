@@ -6,25 +6,36 @@ let cartItems = cartItemsRaw;
 let products = productsRaw;
 
 const dbUrl = 'mongodb+srv://newuser:IuiQpO0uboSoE4Pe@mycluster.pezg5.mongodb.net/'
-const client = new MongoClient(dbUrl)
+const client = new MongoClient(dbUrl, {
+  tls: true,
+  tlsCAFile: '/etc/ssl/certs/CatoNetworksTrustedRootCA.pem'
+})
 
 const app = express();
 app.use(express.json());
 
-app.get('/hello', (req, res) => {
-  res.send('Hello!');
-});
-
-app.get('/products', (req, res) => {
+app.get('/products', async (req, res) => {
+  await client.connect();
+  const db = client.db('vue-db');
+  products = await db.collection('products').find({}).toArray();
   res.json(products);
 });
 
-function populateCartIds(ids) {
-  return ids.map(id => products.find(product => product.id === id));
+async function populateCartIds(ids) {
+  await client.connect();
+  const db = client.db('vue-db');
+  return Promise.all(
+    ids.map(id => db.collection('products').findOne({ id }))
+  );
+  // return ids.map(id => products.find(product => product.id === id));
 }
 
-app.get('/cart', (req, res) => {
-  const populatedCart = populateCartIds(cartItems);
+app.get('/users/:userId/cart', async (req, res) => {
+  const userId = req.params.userId;
+  await client.connect();
+  const userDB = client.db('vue-db');
+  const user = await userDB.collection('users').findOne({ id: userId });
+  const populatedCart = await populateCartIds(user.cartItems);
   res.json(populatedCart);
 });
 
