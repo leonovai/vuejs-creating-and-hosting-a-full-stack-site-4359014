@@ -5,17 +5,22 @@
 
 <script>
 import ProductsList from '@/components/ProductsList.vue';
-import { products } from '../temp-data'
+import axios from 'axios';
 
 export default {
   name: 'ProductPage',
   data() {
     return {
-      products,
+      products: [],
     }
   },
   components: {
     ProductsList,
+  },
+  async created() {
+    const response = await axios.get('/api/products')
+    const products = response.data;
+    this.products = products;
   }
 }
 </script>
