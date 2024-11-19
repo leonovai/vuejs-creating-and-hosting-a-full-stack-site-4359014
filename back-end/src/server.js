@@ -1,12 +1,5 @@
 import express from "express";
 import { MongoClient } from "mongodb";
-import {
-  cartItems as cartItemsRaw,
-  products as productsRaw,
-} from "./temp-data";
-
-let cartItems = cartItemsRaw;
-let products = productsRaw;
 
 async function start() {
   const dbUrl =
@@ -23,7 +16,7 @@ async function start() {
   app.use(express.json());
 
   app.get("/products", async (_, res) => {
-    products = await db.collection("products").find({}).toArray();
+    const products = await db.collection("products").find({}).toArray();
     res.json(products);
   });
 
