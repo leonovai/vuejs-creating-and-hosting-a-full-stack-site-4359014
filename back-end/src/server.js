@@ -44,19 +44,24 @@ async function start() {
   });
 
   app.post("/api/users/:userId/cart", async (req, res) => {
-    const userId = req.params.userId;
-    const productId = req.body.id;
+    try {
+      const userId = req.params.userId;
+      const productId = req.body.id;
 
-    // cartItems.push(productId);
-    await db
-      .collection("users")
-      .updateOne({ id: userId }, { $addToSet: { cartItems: productId } });
+      // cartItems.push(productId);
+      await db
+        .collection("users")
+        .updateOne({ id: userId }, { $addToSet: { cartItems: productId } });
 
-    const user = await db.collection("users").findOne({ id: userId });
+      const user = await db.collection("users").findOne({ id: userId });
 
-    const populatedCart = await populateCartIds(user.cartItems);
-
-    res.json(populatedCart);
+      const populatedCart = await populateCartIds(user.cartItems);
+      res.json(populatedCart);
+    } catch (error) {
+      console.error(error);
+      const populatedCart = [];
+      res.json(populatedCart);
+    }
   });
 
   app.delete("/api/users/:userId/cart/:productId", async (req, res) => {
