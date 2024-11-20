@@ -2,7 +2,7 @@
   <div class="nav-bar">
     <RouterLink to="/products" class="products-link">
       <div class="logo-wrap">
-        <img :src="logo" height="128" width="128">
+        <img :src="logo" height="64" width="64">
       </div>
     </RouterLink>
     <RouterLink to="/cart" class="cart-link">

@@ -11,17 +11,21 @@
 
 <script>
 import ShoppingCartList from '@/components/ShoppingCartList.vue';
-import { cartItems } from '../temp-data'
+import axios from 'axios';
 
 export default {
   name: 'ShoppingCartPage',
   data() {
     return {
-      cartItems,
+      cartItems: {},
     }
   },
   components: {
     ShoppingCartList,
+  },
+  async created() {
+    const response = await axios.get('/api/users/12345/cart')
+    this.cartItems = response.data;
   }
 }
 </script>
