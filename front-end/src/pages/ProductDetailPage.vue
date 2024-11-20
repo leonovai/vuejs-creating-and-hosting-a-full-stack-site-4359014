@@ -6,7 +6,8 @@
     <div class="product-details">
       <h1>{{ product.name }}</h1>
       <h3 class="price">{{ product.price }}</h3>
-      <button class="add-to-cart" @click="addToCart">Add to Cart</button>
+      <button class="add-to-cart" @click="addToCart" v-if="!alreadyInCart">Add to Cart</button>
+      <button v-else class="grey-button">Already in cart</button>
     </div>
   </div>
   <div v-else>
@@ -23,6 +24,7 @@ export default {
   data() {
     return {
       product: {},
+      alreadyInCart: false,
     }
   },
   methods: {
@@ -35,6 +37,7 @@ export default {
         }
       );
       alert("Added to cart!");
+      this.alreadyInCart = true;
     }
   },
   components: {
@@ -43,6 +46,10 @@ export default {
   async created() {
     const response = await axios.get(`/api/products/${this.$route.params.productId}`)
     this.product = response.data;
+
+    const cartResponse = await axios.get('/api/users/12345/cart')
+    const cartItemsIds = cartResponse.data.map(item => item.id);
+    this.alreadyInCart = cartItemsIds.includes(this.product.id)
   }
 }
 </script>
