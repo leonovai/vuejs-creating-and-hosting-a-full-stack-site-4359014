@@ -6,7 +6,7 @@
     <div class="product-details">
       <h1>{{ product.name }}</h1>
       <h3 class="price">{{ product.price }}</h3>
-      <button class="add-to-cart">Add to Cart</button>
+      <button class="add-to-cart" @click="addToCart">Add to Cart</button>
     </div>
   </div>
   <div v-else>
@@ -23,6 +23,18 @@ export default {
   data() {
     return {
       product: {},
+    }
+  },
+  methods: {
+    async addToCart() {
+      console.log(this.$route.params.productId)
+      await axios.post(
+        '/api/users/12345/cart',
+        {
+          id: this.$route.params.productId,
+        }
+      );
+      alert("Added to cart!");
     }
   },
   components: {

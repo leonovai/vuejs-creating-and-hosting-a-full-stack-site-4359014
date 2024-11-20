@@ -17,7 +17,7 @@ export default {
   name: 'ShoppingCartPage',
   data() {
     return {
-      cartItems: {},
+      cartItems: [],
     }
   },
   components: {
